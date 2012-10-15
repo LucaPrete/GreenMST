@@ -1,0 +1,29 @@
+<configuration scan="true">
+
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
+      </pattern>
+    </encoder>
+  </appender>
+  <appender name="beacon.log" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>logs/beacon.log</file>
+
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <fileNamePattern>logs/beacon.%d.log.zip</fileNamePattern>
+      <maxHistory>1</maxHistory>
+    </rollingPolicy>
+
+    <encoder>
+      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{35} - %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <root level="error">
+    <appender-ref ref="STDOUT" />
+    <appender-ref ref="beacon.log" />
+  </root>
+  <logger name="net.beaconcontroller" level="OFF"/>
+  <logger name="net.beaconcontroller.garrRecovery" level="DEBUG"/>
+  <logger name="net.beaconcontroller.garrController" level="DEBUG"/>
+</configuration>

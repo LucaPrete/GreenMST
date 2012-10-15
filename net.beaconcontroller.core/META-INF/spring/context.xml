@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:osgi="http://www.springframework.org/schema/osgi"
+  xmlns:util="http://www.springframework.org/schema/util"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+  http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi-2.0-m1.xsd
+  http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+  <bean class="org.springframework.beans.factory.config.PropertyOverrideConfigurer">
+    <property name="ignoreInvalidKeys" value="true" />
+    <property name="ignoreResourceNotFound" value="true" />
+    <property name="locations" value="file:./beacon.properties"/>
+  </bean>
+
+  <bean id="controller" class="net.beaconcontroller.core.internal.Controller"
+    init-method="startUp" destroy-method="shutDown">
+    <property name="callbackOrdering" ref="callbackOrdering"/>
+    <property name="listenPort" value="6633"/>
+  </bean>
+
+  <bean id="frameworkListener" class="net.beaconcontroller.core.internal.SpringFrameworkListener" init-method="start">
+    <property name="controller" ref="controller"/>
+  </bean>
+
+  <util:map id="callbackOrdering">
+    <entry key="PACKET_IN" value="topology,devicemanager,garrRecovery,garrController,routing,switch"/>
+  </util:map>
+</beans>
