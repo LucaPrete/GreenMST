@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.eclipse.equinox.serverside.sdk"
+      label="%featureName"
+      version="3.6.0.v20100421-7u7NFVgFN5JdPKM_N9VZwrdLT4m2"
+      provider-name="%providerName">
+
+   <description>
+      %description
+   </description>
+
+   <copyright>
+      %copyright
+   </copyright>
+
+   <license url="%licenseURL">
+      %license
+   </license>
+
+   <includes
+         id="org.eclipse.equinox.server.core"
+         version="1.0.0.v20100510-7K7QEoF7RZHQHHz-Jr"/>
+
+   <includes
+         id="org.eclipse.equinox.server.jetty"
+         version="1.0.0.v20100510-7I777iBgJ9DIARGH8IIQ"/>
+
+   <includes
+         id="org.eclipse.equinox.server.p2"
+         version="1.0.0.v20100503-7x7IFGFFT0z0-V-1UUj-XDpu"/>
+
+   <includes
+         id="org.eclipse.equinox.server.servletbridge"
+         version="1.0.0.v20100510-42A79oB5855K5E"/>
+
+   <includes
+         id="org.eclipse.equinox.server.simple"
+         version="1.0.0.v20100510-44DF8s734C48662444"/>
+
+   <plugin
+         id="javax.servlet"
+         download-size="0"
+         install-size="0"
+         version="2.5.0.v200910301333"
+         unpack="false"/>
+
+   <plugin
+         id="javax.servlet.jsp"
+         download-size="0"
+         install-size="0"
+         version="2.0.0.v200806031607"
+         unpack="false"/>
+
+   <plugin
+         id="javax.servlet.jsp.source"
+         download-size="0"
+         install-size="0"
+         version="2.0.0.v200806031607"
+         unpack="false"/>
+
+   <plugin
+         id="javax.servlet.source"
+         download-size="0"
+         install-size="0"
+         version="2.5.0.v200910301333"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.http"
+         download-size="0"
+         install-size="0"
+         version="1.0.400.v20100503"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.http.source"
+         download-size="0"
+         install-size="0"
+         version="1.0.400.v20100503"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.http.jetty"
+         download-size="0"
+         install-size="0"
+         version="2.0.0.v20100503"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.http.jetty.source"
+         download-size="0"
+         install-size="0"
+         version="2.0.0.v20100503"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.http.registry"
+         download-size="0"
+         install-size="0"
+         version="1.1.0.v20100503"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.http.registry.source"
+         download-size="0"
+         install-size="0"
+         version="1.1.0.v20100503"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.http.servlet"
+         download-size="0"
+         install-size="0"
+         version="1.1.0.v20100503"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.http.servlet.source"
+         download-size="0"
+         install-size="0"
+         version="1.1.0.v20100503"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.http.servletbridge"
+         download-size="0"
+         install-size="0"
+         version="1.0.200.v20100503"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.http.servletbridge.source"
+         download-size="0"
+         install-size="0"
+         version="1.0.200.v20100503"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.jsp.jasper"
+         download-size="0"
+         install-size="0"
+         version="1.0.200.v20100421"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.jsp.jasper.source"
+         download-size="0"
+         install-size="0"
+         version="1.0.200.v20100421"
+         unpack="false"/>
+
+   <plugin
+         id="org.mortbay.jetty.server"
+         download-size="0"
+         install-size="0"
+         version="6.1.23.v201004211559"
+         unpack="false"/>
+
+   <plugin
+         id="org.mortbay.jetty.server.source"
+         download-size="0"
+         install-size="0"
+         version="6.1.23.v201004211559"
+         unpack="false"/>
+
+   <plugin
+         id="org.mortbay.jetty.util"
+         download-size="0"
+         install-size="0"
+         version="6.1.23.v201004211559"
+         unpack="false"/>
+
+   <plugin
+         id="org.mortbay.jetty.util.source"
+         download-size="0"
+         install-size="0"
+         version="6.1.23.v201004211559"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.jsp.jasper.registry"
+         download-size="0"
+         install-size="0"
+         version="1.0.200.v20100503"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.jsp.jasper.registry.source"
+         download-size="0"
+         install-size="0"
+         version="1.0.200.v20100503"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.servletbridge"
+         download-size="0"
+         install-size="0"
+         version="1.2.0.v20100503"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.servletbridge.source"
+         download-size="0"
+         install-size="0"
+         version="1.2.0.v20100503"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.servletbridge.extensionbundle"
+         download-size="0"
+         install-size="0"
+         version="1.2.0.v20100503"
+         fragment="true"
+         unpack="false"/>  
+
+</feature>

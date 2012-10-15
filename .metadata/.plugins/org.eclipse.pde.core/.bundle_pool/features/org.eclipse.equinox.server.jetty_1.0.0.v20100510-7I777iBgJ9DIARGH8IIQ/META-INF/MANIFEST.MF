@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Created-By: 1.6.0 (IBM Corporation)
+
+Name: META-INF/eclipse.inf
+SHA1-Digest: KyT9FF7C7t86NoBoa2kZT3ZJBfw=
+
+Name: license.html
+SHA1-Digest: fphtEeCfqpoKqwts62pNnuL86wM=
+
+Name: feature.properties
+SHA1-Digest: tNgcXPy8PvpbrQ07VQOL0vyjAIM=
+
+Name: feature.xml
+SHA1-Digest: phu9+Vcjdy4P+2efvMF66KN/UOE=
+

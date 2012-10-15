@@ -1,0 +1,28 @@
+Signature-Version: 1.0
+SHA1-Digest-Manifest: kCMGc/d+5SufXYng6OEUo3o+5Qc=
+Created-By: 1.6.0 (IBM Corporation)
+SHA1-Digest-Manifest-Main-Attributes: 8lGQTD349xwqjWOmNYAVExJxTO4=
+
+Name: epl-v10.html
+SHA1-Digest: xipg4kdvniXTRoluum46PzkHsAQ=
+
+Name: META-INF/eclipse.inf
+SHA1-Digest: SAqY+5ITAL0mkdYeijlSRhyIaZk=
+
+Name: license.html
+SHA1-Digest: PY3U3+XP045tRdSVFSlVOBQ12ac=
+
+Name: feature.properties
+SHA1-Digest: Pl2e6YhbVP5KPdzWkLwZfa8/pLc=
+
+Name: META-INF/maven/org.eclipse.jetty.osgi/org.eclipse.pde.junit.runt
+ ime.standalone/pom.properties
+SHA1-Digest: uMzj9/bUTa162fOsI8DzX/t6npU=
+
+Name: feature.xml
+SHA1-Digest: tu3BP47DDcKyUWz7CJY1zpsC30Y=
+
+Name: META-INF/maven/org.eclipse.jetty.osgi/org.eclipse.pde.junit.runt
+ ime.standalone/pom.xml
+SHA1-Digest: Z9dkP+0myguI43MUlhRBlqGcqNk=
+
