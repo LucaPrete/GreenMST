@@ -1,0 +1,8 @@
+eclipse.preferences.version=1
+repositories/http\:__nexus.beaconcontroller.net\:8081_nexus_content_repositories_nx-helios/enabled=true
+repositories/http\:__nexus.beaconcontroller.net\:8081_nexus_content_repositories_nx-helios/isSystem=false
+repositories/http\:__nexus.beaconcontroller.net\:8081_nexus_content_repositories_nx-helios/name=Helios Nexus Proxy for p2.index bug
+repositories/http\:__nexus.beaconcontroller.net\:8081_nexus_content_repositories_nx-helios/suffix=content.xml
+repositories/http\:__nexus.beaconcontroller.net\:8081_nexus_content_repositories_nx-helios/type=org.eclipse.equinox.internal.p2.metadata.repository.LocalMetadataRepository
+repositories/http\:__nexus.beaconcontroller.net\:8081_nexus_content_repositories_nx-helios/uri=http\://nexus.beaconcontroller.net\:8081/nexus/content/repositories/nx-helios/
+repositories/http\:__nexus.beaconcontroller.net\:8081_nexus_content_repositories_nx-helios/version=1.0.0

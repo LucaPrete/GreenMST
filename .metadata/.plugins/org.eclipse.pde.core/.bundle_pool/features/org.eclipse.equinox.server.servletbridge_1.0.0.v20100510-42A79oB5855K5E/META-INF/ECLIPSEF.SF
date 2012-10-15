@@ -1,0 +1,27 @@
+Signature-Version: 1.0
+SHA1-Digest-Manifest: poN4nDbZ/Ctr3rvdZgWNP6bmap0=
+Created-By: 1.6.0 (IBM Corporation)
+SHA1-Digest-Manifest-Main-Attributes: 4gIfTP5y3EzwI5ecyebQLugBMgo=
+
+Name: rootfiles/launch.ini
+SHA1-Digest: 2DdW3bp62NVGn7Xh7UwyeEYNEy4=
+
+Name: rootfiles/web.xml
+SHA1-Digest: X9N9RnjBBqrLYTGTVqe5fyjzPIE=
+
+Name: META-INF/eclipse.inf
+SHA1-Digest: SAqY+5ITAL0mkdYeijlSRhyIaZk=
+
+Name: license.html
+SHA1-Digest: PY3U3+XP045tRdSVFSlVOBQ12ac=
+
+Name: feature.properties
+SHA1-Digest: HdaNNtLcvfkxS4wSof17ISNhuzo=
+
+Name: feature.xml
+SHA1-Digest: QADCgXkiqZ5SFBsYOhalIWPHTxM=
+
+Name: rootfiles/lib/org.eclipse.equinox.servletbridge_1.2.0.v20100201.
+ jar
+SHA1-Digest: u7i8F1310KTWl2y3o0vdJVRPcIo=
+

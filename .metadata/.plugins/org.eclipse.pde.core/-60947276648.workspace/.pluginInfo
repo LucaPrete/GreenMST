@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map>
+	<bundle bundleID="257" localization="OSGI-INF/l10n/bundle" name="net.beaconcontroller.routing.apsp" project="net.beaconcontroller.routing.apsp"/>
+	<bundle bundleID="258" localization="OSGI-INF/l10n/bundle" name="net.beaconcontroller.logging.config" project="net.beaconcontroller.logging.config" provider="net.beaconcontroller"/>
+	<bundle bundleID="260" localization="OSGI-INF/l10n/bundle" name="net.beaconcontroller.topology.tests" project="net.beaconcontroller.topology.tests" provider="net.beaconcontroller"/>
+	<bundle bundleID="259" localization="OSGI-INF/l10n/bundle" name="net.beaconcontroller.topology" project="net.beaconcontroller.topology"/>
+	<bundle bundleID="261" localization="OSGI-INF/l10n/bundle" name="net.beaconcontroller.routing" project="net.beaconcontroller.routing"/>
+	<bundle bundleID="262" localization="OSGI-INF/l10n/bundle" name="net.beaconcontroller.util" project="net.beaconcontroller.util"/>
+	<bundle bundleID="263" localization="OSGI-INF/l10n/bundle" name="net.beaconcontroller.hub.tests" project="net.beaconcontroller.hub.tests" provider="net.beaconcontroller"/>
+	<bundle bundleID="264" localization="OSGI-INF/l10n/bundle" name="net.beaconcontroller.core.web" project="net.beaconcontroller.core.web"/>
+	<bundle bundleID="265" localization="OSGI-INF/l10n/bundle" name="net.beaconcontroller.topology.web" project="net.beaconcontroller.topology.web"/>
+	<bundle bundleID="266" localization="OSGI-INF/l10n/bundle" name="net.beaconcontroller.routing.apsp.tests" project="net.beaconcontroller.routing.apsp.tests" provider="net.beaconcontroller"/>
+	<bundle bundleID="267" localization="OSGI-INF/l10n/bundle" name="Beacon Core" project="net.beaconcontroller.core"/>
+	<bundle bundleID="268" localization="OSGI-INF/l10n/bundle" name="net.beaconcontroller.devicemanager.tests" project="net.beaconcontroller.devicemanager.tests" provider="net.beaconcontroller"/>
+	<bundle bundleID="269" localization="OSGI-INF/l10n/bundle" name="net.beaconcontroller.logging.bridge" project="net.beaconcontroller.logging.bridge" provider="net.beaconcontroller"/>
+	<bundle bundleID="270" localization="OSGI-INF/l10n/bundle" name="net.beaconcontroller.GarrController" project="net.beaconcontroller.garrController"/>
+	<bundle bundleID="271" localization="OSGI-INF/l10n/bundle" name="Beacon Test Library" project="net.beaconcontroller.test"/>
+	<bundle bundleID="272" localization="OSGI-INF/l10n/bundle" name="Hub" project="net.beaconcontroller.hub"/>
+	<bundle bundleID="273" localization="OSGI-INF/l10n/bundle" name="Beacon Core Web" project="net.beaconcontroller.web">
+		<library name="."/>
+		<library name="WEB-INF/classes"/>
+	</bundle>
+	<bundle bundleID="274" localization="OSGI-INF/l10n/bundle" name="net.beaconcontroller.core.tests" project="net.beaconcontroller.core.tests" provider="net.beaconcontroller"/>
+	<bundle bundleID="275" localization="OSGI-INF/l10n/bundle" name="net.beaconcontroller.learningswitch.tests" project="net.beaconcontroller.learningswitch.tests" provider="net.beaconcontroller"/>
+	<bundle bundleID="276" localization="OSGI-INF/l10n/bundle" name="net.beaconcontroller.routing.tests" project="net.beaconcontroller.routing.tests" provider="net.beaconcontroller"/>
+	<bundle bundleID="279" localization="OSGI-INF/l10n/bundle" name="Device Manager" project="net.beaconcontroller.devicemanager"/>
+	<bundle bundleID="278" localization="OSGI-INF/l10n/bundle" name="net.beaconcontroller.devicemanager.web" project="net.beaconcontroller.devicemanager.web"/>
+	<bundle bundleID="277" localization="OSGI-INF/l10n/bundle" name="Learning Layer-2 Switch" project="net.beaconcontroller.learningswitch"/>
+	<bundle bundleID="282" localization="OSGI-INF/l10n/bundle" name="GarrRecovery" project="net.beaconcontroller.garrRecovery"/>
+	<bundle bundleID="281" localization="OSGI-INF/l10n/bundle" name="net.beaconcontroller.jetty.config" project="net.beaconcontroller.jetty.config"/>
+	<bundle bundleID="283" localization="OSGI-INF/l10n/bundle" name="Packet Library" project="net.beaconcontroller.packet"/>
+</map>
