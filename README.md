@@ -66,4 +66,4 @@ GreenMST
   the corrisponding authors of the paper:
   
        o Luca Prete <luca.prete@garr.it>
-	     o Fabio Farina <fabio.farina@garr.it>
+       o Fabio Farina <fabio.farina@garr.it>
