@@ -67,14 +67,14 @@ public class GreenMST implements IFloodlightModule, IGreenMSTService, ITopologyL
 			ComparableLink link = new ComparableLink(update.getSrc(), update.getSrcPort(), update.getDst(), update.getDstPort());
 			
 			if (update.getOperation().equals(ILinkDiscovery.UpdateOperation.LINK_REMOVED)) { 
-	            logger.debug("Link removed: {}.", new Object[] { link });
 	            if (!topoEdges.contains(link)) {
+	            	logger.debug("Link removed: {}.", new Object[] { link });
 	            	topoEdges.remove(link);
 	            	updateLinks();
 	            }
 			} else if(update.getOperation().equals(ILinkDiscovery.UpdateOperation.LINK_UPDATED)) {
-				logger.debug("Link updated: {}.", new Object[] { link });
 				if (!topoEdges.contains(link)) {
+					logger.debug("Link added: {}.", new Object[] { link });
 	                topoEdges.add(link);
 	                updateLinks();
 	            }
