@@ -11,4 +11,5 @@
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="net.floodlightcontroller.core.Main"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-cf floodlight.properties"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="GreenMST"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dlogback.configurationFile=logback.xml"/>
 </launchConfiguration>
