@@ -1,7 +1,5 @@
 package it.garr.greenmst;
 
-import it.garr.greenmst.algorithms.IMinimumSpanningTreeAlgorithm;
-import it.garr.greenmst.algorithms.KruskalAlgorithm;
 import it.garr.greenmst.types.ComparableLink;
 import it.garr.greenmst.web.GreenMSTWebRoutable;
 
@@ -29,7 +27,6 @@ import net.floodlightcontroller.topology.ITopologyService;
 import org.openflow.protocol.OFPhysicalPort;
 import org.openflow.protocol.OFPhysicalPort.OFPortConfig;
 import org.openflow.protocol.OFPortMod;
-import org.openflow.util.HexString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -55,11 +52,9 @@ public class GreenMST implements IFloodlightModule, IGreenMSTService, ITopologyL
 	protected ITopologyService topology = null;
 	protected static Logger logger = null;
 	
-	// Data structures for caching algorithm results
+	// Data structures for Kruskal
 	protected TreeSet<ComparableLink> topoEdges = new TreeSet<ComparableLink>();
 	protected HashSet<ComparableLink> redundantEdges = new HashSet<ComparableLink>();
-	
-	private IMinimumSpanningTreeAlgorithm algorithm = new KruskalAlgorithm();
 	
 	@Override
 	public void topologyChanged() {		
@@ -67,14 +62,14 @@ public class GreenMST implements IFloodlightModule, IGreenMSTService, ITopologyL
 			ComparableLink link = new ComparableLink(update.getSrc(), update.getSrcPort(), update.getDst(), update.getDstPort());
 			
 			if (update.getOperation().equals(ILinkDiscovery.UpdateOperation.LINK_REMOVED)) { 
+	            logger.debug("Link removed: " + link.toString());
 	            if (!topoEdges.contains(link)) {
-	            	logger.debug("Link removed: {}.", new Object[] { link });
 	            	topoEdges.remove(link);
 	            	updateLinks();
 	            }
 			} else if(update.getOperation().equals(ILinkDiscovery.UpdateOperation.LINK_UPDATED)) {
+				logger.debug("Link updated: " + link.toString());
 				if (!topoEdges.contains(link)) {
-					logger.debug("Link added: {}.", new Object[] { link });
 	                topoEdges.add(link);
 	                updateLinks();
 	            }
@@ -83,52 +78,98 @@ public class GreenMST implements IFloodlightModule, IGreenMSTService, ITopologyL
 	}
 	
 	private void updateLinks() {
-		logger.debug("Updating MST because of topology change...");
-		
         // Perform Kruskal
-		HashSet<ComparableLink> oldRedundantEdges = this.redundantEdges,
-								newRedundantEdges = null;
-		
         try {
-        	Vector<ComparableLink> mstEdges = algorithm.perform(topoEdges);
+        	Vector<ComparableLink> mstEdges = performKruskal(topoEdges);
             // In mstEdges we now have all edges of the MST
             // topoEdges still contains a list of all edges of the known physical network   
-        	newRedundantEdges = removeRedundantEdges(mstEdges);
+            HashSet<ComparableLink> redundantEdges = removeRedundantEdges(mstEdges);
             // redundantEdges contains edges to be closed according to Kruskal
             // (ie edges in topoEdges but not present in mstEdges, edges not in MSP and not already closed)
-        } catch (Exception e) {
-            logger.error("Error calculating MST with Kruskal ", e);
-        }
-        
-        if (newRedundantEdges != null) {
+            
             // Close edges in redundantEdges
-            for (ComparableLink s : newRedundantEdges) {
-                if (!oldRedundantEdges.contains(s)) {
-                	try {
-                		modPort(s.getSrc(), s.getSrcPort(), false);
-                	} catch (Exception e) {
-                		logger.error("Error while closing port {} on switch {}.", new Object[] { s.getSrcPort(), s.getSrc() }, e);
-                	}
+            for (ComparableLink s : redundantEdges) {
+                if (!this.redundantEdges.contains(s)) {
+                	// Closes both direction of the link
+                	modPort(s.getSrc(), s.getSrcPort(), false);
+                	//modPort(s.getDst(), s.getDstPort(), false);
                 }
             }
             
             // Re-open ports in MSP which were closed in previous iterations
             // (ie edges in the redundantEdges, from previous execution, and not in the current execution)
-            for (ComparableLink s : oldRedundantEdges) {
-                if (!newRedundantEdges.contains(s)) {
-                	try {
-                		modPort(s.getSrc(), s.getSrcPort(), true);
-                	} catch (Exception e) {
-                		logger.error("Error while opening port {} on switch {}.", new Object[] { s.getSrcPort(), s.getSrc() }, e);
-                	}
+            for (ComparableLink s : this.redundantEdges) {
+                if (!redundantEdges.contains(s)) {
+                	// Opens both direction of the link
+                	modPort(s.getSrc(), s.getSrcPort(), true);
+                	//modPort(s.getDst(), s.getDstPort(), true);
                 }
             }
-
+            
             // Clone redundantEdges in redundantEdges for future iterations
-            this.redundantEdges = newRedundantEdges;
+            this.redundantEdges = redundantEdges;
+            // printFinalEdges();
+        } catch (Exception e) {
+            logger.error("Error calculating MST with Kruskal ", e);
         }
-        
-        printFinalEdges();
+    }
+	
+	// KRUSKAL ALGORITHM -- COLUMBIA UNIV. IMPL.
+    private Vector<ComparableLink> performKruskal(TreeSet<ComparableLink> topoEdges) throws Exception {
+    	HashMap<Long, HashSet<Long>> nodes = new HashMap<Long, HashSet<Long>>();
+		
+        // Generates nodes Hashmap containing one entry for each switch
+        for (ComparableLink lt: topoEdges) {
+            if (!nodes.containsKey(lt.getSrc())) {
+            	// Create set of connect components [singleton] for this node
+                nodes.put(lt.getSrc(), new HashSet<Long>());
+                nodes.get(lt.getSrc()).add(lt.getSrc());
+            }
+            
+            if (!nodes.containsKey(lt.getDst())) {
+            	// Create set of connect components [singleton] for this node
+                nodes.put(lt.getDst(), new HashSet<Long>());
+                nodes.get(lt.getDst()).add(lt.getDst());
+            }
+        }
+    	
+    	Vector<ComparableLink> mstEdges = new Vector<ComparableLink>();
+    	Vector<ComparableLink> edgesDone = new Vector<ComparableLink>();
+    	
+    	for (ComparableLink curEdge: topoEdges) {
+	        if (!edgesDone.contains(curEdge)) {
+	        	edgesDone.add(curEdge); // This way the same edge will not be processed two times (if present two times in topoEdges)
+	        	if (!nodes.get(curEdge.getSrc()).equals(nodes.get(curEdge.getDst()))) {
+	        		HashSet<Long> src = null, dst = null;
+	        		Long dstHashSetIndex;
+	        		if (nodes.get(curEdge.getSrc()).size() > nodes.get(curEdge.getDst()).size()) {
+	        			// have to transfer all nodes including curEdge.to
+	        			src = nodes.get(curEdge.getDst());
+	        			dst = nodes.get(dstHashSetIndex = curEdge.getSrc());
+	        		} else {
+	        			// have to transfer all nodes including curEdge.from
+	        			src = nodes.get(curEdge.getSrc());
+	        			dst = nodes.get(dstHashSetIndex = curEdge.getDst());
+	        		}
+	        		Object[] srcArray = src.toArray();
+	        		int transferSize = srcArray.length;
+	        		for (int j = 0; j < transferSize; j++) {
+	        			// move each node from set: src into set: dst
+	        			// and update appropriate index in array: nodes
+	        			if (src.remove(srcArray[j])) {
+	        				dst.add((Long) srcArray[j]);
+	        				nodes.put((Long) srcArray[j], nodes.get(dstHashSetIndex));
+	        			} else {
+	        				logger.error("Kruskal - Error performing Kruskal algorithm (set union)");
+	        				throw new Exception("Kruskal - Error performing Kruskal algorithm (set union)");
+	        			}
+	        		}
+	        		mstEdges.add(curEdge);
+	        	}
+	        }
+    	}
+    	
+    	return mstEdges;
     }
 	
     private HashSet<ComparableLink> removeRedundantEdges(Vector<ComparableLink> mstEdges) {
@@ -146,31 +187,33 @@ public class GreenMST implements IFloodlightModule, IGreenMSTService, ITopologyL
     
 	private void modPort(long switchId, short portNum, boolean open) throws InterruptedException, ExecutionException, IOException {
     	OFPortMod portMod = new OFPortMod();
+    	String action = (open == true) ? "opening" : "closing";
 
-    	// Search ports for finding hardware address
     	for (OFPhysicalPort curPort : floodlightProvider.getSwitches().get(switchId).getFeaturesReplyFromSwitch().get().getPorts()) {
     		if (curPort.getPortNumber() == portNum) portMod.setHardwareAddress(curPort.getHardwareAddress());
     	}
 
-    	//portMod.setHardwareAddress(floodlightProvider.getSwitches().get(switchId).getPort(portNum).getHardwareAddress());
     	portMod.setPortNumber(portNum);
     	portMod.setMask(OFPortConfig.OFPPC_PORT_DOWN.getValue());
-    	portMod.setConfig((open == true) ? 0 : 1);
-    	
-    	if (portMod.getHardwareAddress() != null) logger.info("Sending ModPort command to switch {} - {} port {} (hw address {}).", new Object[] { switchId, ((open == true) ? "opening" : "closing"), portNum, HexString.toHexString(portMod.getHardwareAddress())});
-    	else logger.info("Sending ModPort command to switch {} - {} port {}.", new Object[] { switchId, ((open == true) ? "opening" : "closing"), portNum});
-    	
-		floodlightProvider.getSwitches().get(switchId).write(portMod, null);
+    	portMod.setConfig((open == true) ? 0 << 0 : OFPortConfig.OFPPC_PORT_DOWN.getValue());
+
+    	try {
+    		logger.debug("Sending ModPort command to switch " + switchId + " - " + action + " port " + portNum);
+    		floodlightProvider.getSwitches().get(switchId).write(portMod, null);
+    	} catch (Exception e) {
+    		logger.error("Error while " + action + " port " + portNum + " on switch " + switchId, e);
+    	}
     }
     
-	protected void printFinalEdges() {
+	@SuppressWarnings("unused")
+	private void printFinalEdges() {
     	String s  = "\n\n";
     	s += "################################################\n" +
              "#####     New MST generated by Kruskal     #####\n" +
              "################################################\n";
     	s += "The minimal spanning tree generated by Kruskal's algorithm is: \n";
     	for (ComparableLink e: topoEdges) {
-    		s += "Nodes: (" + e.getDst() + ", " + e.getSrc() + ") with cost: " + e.getCost() + "\n";
+    		s += "Nodes: (" + e.getDst() + ", " + e.getSrc() + ")";
     	}
     	s += "Following ports will be closed: \n";
     	for (ComparableLink spt : redundantEdges){
@@ -178,7 +221,7 @@ public class GreenMST implements IFloodlightModule, IGreenMSTService, ITopologyL
     	}
     	s += "##############################################\n";
     	
-    	logger.trace(s);
+    	logger.debug(s);
     }
     
 	@Override

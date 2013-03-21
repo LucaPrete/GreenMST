@@ -1,0 +1,13 @@
+package it.garr.greenmst.algorithms;
+
+import it.garr.greenmst.types.ComparableLink;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Vector;
+
+public interface IMinimumSpanninTree {
+	
+	public Vector<ComparableLink> performKruskal(HashMap<Long, HashSet<Long>> nodes) throws Exception;
+	
+}

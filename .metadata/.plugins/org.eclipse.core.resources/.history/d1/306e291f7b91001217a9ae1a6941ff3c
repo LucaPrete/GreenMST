@@ -1,0 +1,17 @@
+package it.garr.greenmst.algorithms;
+
+import it.garr.greenmst.types.ComparableLink;
+
+import java.util.TreeSet;
+import java.util.Vector;
+
+public class KruskalAlgorithm implements IMinimumSpanningTreeAlgorithm {
+
+	@Override
+	public Vector<ComparableLink> performKruskal(
+			TreeSet<ComparableLink> topoEdges) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}
