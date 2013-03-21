@@ -1,0 +1,55 @@
+package it.garr.greenmst.algorithms;
+
+import it.garr.greenmst.types.ComparableLink;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Vector;
+
+public class KruskalAlgorithm implements IMinimumSpanninTree {
+
+	@Override
+	public Vector<ComparableLink> performKruskal( HashMap<Long, HashSet<Long>> nodes) throws Exception {
+		Vector<ComparableLink> mstEdges = new Vector<ComparableLink>();
+    	Vector<ComparableLink> edgesDone = new Vector<ComparableLink>();
+    	
+    	for (ComparableLink curEdge: topoEdges) {
+	        if (!edgesDone.contains(curEdge)) {
+	        	edgesDone.add(curEdge); // This way the same edge will not be processed two times (if present two times in topoEdges)
+	        	if (!nodes.get(curEdge.getSrc()).equals(nodes.get(curEdge.getDst()))) {
+	        		HashSet<Long> src = null, dst = null;
+	        		Long dstHashSetIndex;
+	        		if (nodes.get(curEdge.getSrc()).size() > nodes.get(curEdge.getDst()).size()) {
+	        			// have to transfer all nodes including curEdge.to
+	        			src = nodes.get(curEdge.getDst());
+	        			dst = nodes.get(dstHashSetIndex = curEdge.getSrc());
+	        		} else {
+	        			// have to transfer all nodes including curEdge.from
+	        			src = nodes.get(curEdge.getSrc());
+	        			dst = nodes.get(dstHashSetIndex = curEdge.getDst());
+	        		}
+	        		Object[] srcArray = src.toArray();
+	        		int transferSize = srcArray.length;
+	        		for (int j = 0; j < transferSize; j++) {
+	        			// move each node from set: src into set: dst
+	        			// and update appropriate index in array: nodes
+	        			if (src.remove(srcArray[j])) {
+	        				dst.add((Long) srcArray[j]);
+	        				nodes.put((Long) srcArray[j], nodes.get(dstHashSetIndex));
+	        			} else {
+	        				logger.error("Kruskal - Error performing Kruskal algorithm (set union)");
+	        				throw new Exception("Kruskal - Error performing Kruskal algorithm (set union)");
+	        			}
+	        		}
+	        		mstEdges.add(curEdge);
+	        	}
+	        } else {
+	        	logger.error("Kruskal - Error TreeSet should have contained this element!!");
+	        	throw new Exception("Kruskal - Error TreeSet should have contained this element!!");
+	        }
+    	}
+    	
+    	return mstEdges;
+	}
+
+}

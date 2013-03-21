@@ -1,0 +1,7 @@
+package it.garr.greenmst.algorithms;
+
+public interface IMinimumSpanningTreeAlgorithm {
+	
+	
+
+}

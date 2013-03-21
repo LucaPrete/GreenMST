@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry including="META-INF/|floodlight.properties" kind="src" path=""/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry kind="lib" path="/home/andrea/Documents/uni/research/sdn/floodlight-0.90/target/floodlight.jar" sourcepath="/home/andrea/Documents/uni/research/sdn/floodlight-0.90/src/main/java"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

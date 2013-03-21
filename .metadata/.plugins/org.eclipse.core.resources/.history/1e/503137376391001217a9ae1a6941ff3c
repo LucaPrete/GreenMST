@@ -1,0 +1,18 @@
+package it.garr.greenmst.algorithms;
+
+import it.garr.greenmst.types.ComparableLink;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Vector;
+
+public class KruskalAlgorithm implements IMinimumSpanninTree {
+
+	@Override
+	public Vector<ComparableLink> performKruskal(
+			HashMap<Long, HashSet<Long>> nodes) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}
