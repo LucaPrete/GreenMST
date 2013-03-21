@@ -16,6 +16,7 @@ import java.util.Vector;
 import java.util.concurrent.ExecutionException;
 
 import net.floodlightcontroller.core.IFloodlightProviderService;
+import net.floodlightcontroller.core.IOFSwitch;
 import net.floodlightcontroller.core.module.FloodlightModuleContext;
 import net.floodlightcontroller.core.module.FloodlightModuleException;
 import net.floodlightcontroller.core.module.IFloodlightModule;
@@ -152,11 +153,11 @@ public class GreenMST implements IFloodlightModule, IGreenMSTService, ITopologyL
     		if (curPort.getPortNumber() == portNum) portMod.setHardwareAddress(curPort.getHardwareAddress());
     	}
 
+    	//portMod.setHardwareAddress(switchObj.getPort(portNum).getHardwareAddress());
     	portMod.setPortNumber(portNum);
     	portMod.setMask(OFPortConfig.OFPPC_PORT_DOWN.getValue());
     	portMod.setConfig((open == true) ? 0 : 1);
     	
-    	floodlightProvider.getSwitches().get(switchId).getPort(portNum);
     	if (portMod.getHardwareAddress() != null) logger.info("Sending ModPort command to switch {} - {} port {} (hw address {}).", new Object[] { switchId, ((open == true) ? "opening" : "closing"), portNum, HexString.toHexString(portMod.getHardwareAddress())});
     	else logger.info("Sending ModPort command to switch {} - {} port {}.", new Object[] { switchId, ((open == true) ? "opening" : "closing"), portNum});
     	
