@@ -10,8 +10,8 @@ import org.restlet.resource.Get;
 import org.restlet.resource.ServerResource;
 
 /**
- * Class describing the redundantEdges resource for the GreenMST REST api.
- *
+ * Class describing the topoEdges resource for the GreenMST REST api.
+ * 
  * @author Luca Prete <luca.prete@garr.it>
  * @author Andrea Biancini <andrea.biancini@garr.it>
  * @author Fabio Farina <fabio.farina@garr.it>
@@ -23,13 +23,13 @@ import org.restlet.resource.ServerResource;
  *
  */
 
-public class RedundantEdgesResource extends ServerResource {
+public class MSTEdgesResource extends ServerResource {
 	
     @Get("json")
     public List<LinkWithCost> retrieve() {
         IGreenMSTService service = (IGreenMSTService) getContext().getAttributes().get(IGreenMSTService.class.getCanonicalName());
         List<LinkWithCost> l = new ArrayList<LinkWithCost>();
-        l.addAll(service.getRedundantEdges());
+        l.addAll(service.getMSTEdges());
         return l;
     }
     

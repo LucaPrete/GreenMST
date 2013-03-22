@@ -1,10 +1,10 @@
 package it.garr.greenmst;
 
 
-import it.garr.greenmst.types.ComparableLink;
+import it.garr.greenmst.types.LinkWithCost;
+import it.garr.greenmst.types.TopologyCosts;
 
-import java.util.HashSet;
-import java.util.TreeSet;
+import java.util.Set;
 
 import net.floodlightcontroller.core.module.IFloodlightService;
 
@@ -22,7 +22,10 @@ import net.floodlightcontroller.core.module.IFloodlightService;
 
 public interface IGreenMSTService extends IFloodlightService {
 	
-	public TreeSet<ComparableLink> getTopoEdges();
-    public HashSet<ComparableLink> getRedundantEdges();
+	public Set<LinkWithCost> getMSTEdges();
+	public Set<LinkWithCost> getTopoEdges();
+    public Set<LinkWithCost> getRedundantEdges();
+	public TopologyCosts getCosts();
+	public void setCosts(TopologyCosts costs);
     
 }
