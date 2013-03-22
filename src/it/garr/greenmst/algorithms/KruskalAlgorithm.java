@@ -18,15 +18,28 @@ public class KruskalAlgorithm implements IMinimumSpanningTreeAlgorithm {
 	protected static Logger logger = LoggerFactory.getLogger(KruskalAlgorithm.class);
 
 	@Override
+	public Vector<LinkWithCost> perform(List<LinkWithCost> topoEdges) throws Exception {
+		return perform(topoEdges, true);
+	}
+	
+	@Override
 	// KRUSKAL ALGORITHM -- COLUMBIA UNIV. IMPL.
-    public Vector<LinkWithCost> perform(List<LinkWithCost> topoEdges) throws Exception {
+    public Vector<LinkWithCost> perform(List<LinkWithCost> topoEdges, boolean reverse) throws Exception {
 		logger.debug("Starting to perform Kruskal algorithm...");
 		
-		Collections.sort(topoEdges, new Comparator<LinkWithCost>() {
-			public int compare(LinkWithCost link1, LinkWithCost link2) {
-				return new Integer(link1.getCost()).compareTo(link2.getCost());
-			}
-		});
+		if (reverse) {
+			Collections.sort(topoEdges, new Comparator<LinkWithCost>() {
+				public int compare(LinkWithCost link1, LinkWithCost link2) {
+					return new Integer(link2.getCost()).compareTo(link1.getCost());
+				}
+			});
+		} else {
+			Collections.sort(topoEdges, new Comparator<LinkWithCost>() {
+				public int compare(LinkWithCost link1, LinkWithCost link2) {
+					return new Integer(link1.getCost()).compareTo(link2.getCost());
+				}
+			});
+		}
 		
 		logger.trace("Kruskal performed on the following topoEdges: " + printEdges(topoEdges));
 		

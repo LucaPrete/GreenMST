@@ -76,8 +76,7 @@ public class GreenMST implements IFloodlightModule, IGreenMSTService, ITopologyL
 				
 				if (update.getOperation().equals(ILinkDiscovery.UpdateOperation.LINK_REMOVED)) {
 		            if ((topoEdges.contains(link) || topoEdges.contains(link.getInverse())) && 
-		            		!redundantEdges.contains(link) && !redundantEdges.contains(link.getInverse())) {
-		            	
+		            		!redundantEdges.contains(link) && !redundantEdges.contains(link.getInverse())) {	
 		            	logger.debug("Link removed: {}.", new Object[] { link });
 		            	topoEdges.remove(link);
 		            	updateLinks();

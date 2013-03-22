@@ -9,7 +9,7 @@ do
     "h")
       echo "Run command with:"
       echo "  $0 [-c controller_ip] [-a action_name]"
-      echo "  where action_name can be one in: {topocosts, topoedges, redundantedges}"
+      echo "  where action_name can be one in: {topocosts, topoedges, redundantedges, mstedges}"
       exit 1
       ;;
     "c")
