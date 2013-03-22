@@ -152,7 +152,11 @@ public class GreenMST implements IFloodlightModule, IGreenMSTService, ITopologyL
     		if (curPort.getPortNumber() == portNum) portMod.setHardwareAddress(curPort.getHardwareAddress());
     	}
 
+<<<<<<< HEAD
     	//portMod.setHardwareAddress(floodlightProvider.getSwitches().get(switchId).getPort(portNum).getHardwareAddress());
+=======
+    	//portMod.setHardwareAddress(switchObj.getPort(portNum).getHardwareAddress());
+>>>>>>> e58c9214a80e2bf28eb41c595e939c611d449bf6
     	portMod.setPortNumber(portNum);
     	portMod.setMask(OFPortConfig.OFPPC_PORT_DOWN.getValue());
     	portMod.setConfig((open == true) ? 0 : 1);
