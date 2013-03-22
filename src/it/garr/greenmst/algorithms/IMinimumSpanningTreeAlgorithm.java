@@ -1,12 +1,12 @@
 package it.garr.greenmst.algorithms;
 
-import it.garr.greenmst.types.ComparableLink;
+import it.garr.greenmst.types.LinkWithCost;
 
-import java.util.TreeSet;
+import java.util.List;
 import java.util.Vector;
 
 public interface IMinimumSpanningTreeAlgorithm {
 	
-	public Vector<ComparableLink> perform(TreeSet<ComparableLink> topoEdges) throws Exception;
+	public Vector<LinkWithCost> perform(List<LinkWithCost> topoEdges) throws Exception;
 
 }

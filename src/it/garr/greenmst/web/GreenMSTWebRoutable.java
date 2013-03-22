@@ -24,6 +24,8 @@ public class GreenMSTWebRoutable implements RestletRoutable {
     @Override
     public Restlet getRestlet(Context context) {
         Router router = new Router(context);
+        router.attach("/topocosts/json", TopoCostsResource.class);
+        router.attach("/mstedges/json", MSTEdgesResource.class);
         router.attach("/topoedges/json", TopoEdgesResource.class);
         router.attach("/redundantedges/json", RedundantEdgesResource.class);
         return router;

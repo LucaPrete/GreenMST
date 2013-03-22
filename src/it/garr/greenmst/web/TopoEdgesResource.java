@@ -1,7 +1,7 @@
 package it.garr.greenmst.web;
 
 import it.garr.greenmst.IGreenMSTService;
-import it.garr.greenmst.types.ComparableLink;
+import it.garr.greenmst.types.LinkWithCost;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +18,7 @@ import org.restlet.resource.ServerResource;
  * 
  * @version 0.8
  * @see org.restlet.resource.ServerResource
- * @see it.garr.greenmst.types.ComparableLink
+ * @see it.garr.greenmst.types.LinkWithCost
  * @see it.garr.greenmst.IGreenMSTService
  *
  */
@@ -26,9 +26,9 @@ import org.restlet.resource.ServerResource;
 public class TopoEdgesResource extends ServerResource {
 	
     @Get("json")
-    public List<ComparableLink> retrieve() {
+    public List<LinkWithCost> retrieve() {
         IGreenMSTService service = (IGreenMSTService) getContext().getAttributes().get(IGreenMSTService.class.getCanonicalName());
-        List<ComparableLink> l = new ArrayList<ComparableLink>();
+        List<LinkWithCost> l = new ArrayList<LinkWithCost>();
         l.addAll(service.getTopoEdges());
         return l;
     }

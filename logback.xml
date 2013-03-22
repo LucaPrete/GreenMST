@@ -12,4 +12,7 @@
   <logger name="net.floodlightcontroller" level="INFO"/>
   <logger name="net.floodlightcontroller.logging" level="INFO"/>
   <logger name="it.garr" level="DEBUG"/>
+  <logger name="it.garr.greenmst.GreenMST" level="DEBUG"/>
+  <logger name="it.garr.greenmst.algorithms" level="DEBUG"/>
+  <logger name="it.garr.greenmst.types.ComparableLink" level="INFO"/>
 </configuration>

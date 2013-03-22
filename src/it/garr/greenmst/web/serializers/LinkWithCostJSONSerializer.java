@@ -1,6 +1,6 @@
 package it.garr.greenmst.web.serializers;
 
-import it.garr.greenmst.types.ComparableLink;
+import it.garr.greenmst.types.LinkWithCost;
 
 import java.io.IOException;
 
@@ -19,30 +19,30 @@ import org.openflow.util.HexString;
  * 
  * @version 0.8
  * @see org.codehaus.jackson.map.JsonSerializer
- * @see it.garr.greenmst.types.ComparableLink
+ * @see it.garr.greenmst.types.LinkWithCost
  *
  */
 
-public class ComparableLinkJSONSerializer extends JsonSerializer<ComparableLink> {
+public class LinkWithCostJSONSerializer extends JsonSerializer<LinkWithCost> {
 
     @Override
-    public void serialize(ComparableLink link, JsonGenerator jGen, SerializerProvider sProvider)
+    public void serialize(LinkWithCost link, JsonGenerator jGen, SerializerProvider sProvider)
     		throws IOException, JsonProcessingException {
     	
         jGen.writeStartObject();
         
         jGen.writeStringField("sourceSwitch", HexString.toHexString(link.getSrc()));
-        jGen.writeStringField("sourcePort", Short.toString(link.getSrcPort()));
+        jGen.writeNumberField("sourcePort", link.getSrcPort());
         jGen.writeStringField("destinationSwitch", HexString.toHexString(link.getDst()));
-        jGen.writeStringField("destinationPort", Short.toString(link.getDstPort()));
-        jGen.writeStringField("cost", Integer.toString(link.getCost()));
+        jGen.writeNumberField("destinationPort", link.getDstPort());
+        jGen.writeNumberField("cost", link.getCost());
         
         jGen.writeEndObject();
     }
 
     @Override
-    public Class<ComparableLink> handledType() {
-        return ComparableLink.class;
+    public Class<LinkWithCost> handledType() {
+        return LinkWithCost.class;
     }
 
 }
