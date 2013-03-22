@@ -19,7 +19,7 @@ public class KruskalAlgorithm implements IMinimumSpanningTreeAlgorithm {
 
 	@Override
 	public Vector<LinkWithCost> perform(List<LinkWithCost> topoEdges) throws Exception {
-		return perform(topoEdges, true);
+		return perform(topoEdges, false);
 	}
 	
 	@Override
