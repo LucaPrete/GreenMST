@@ -5,10 +5,10 @@ Implementation of module for Floodligth which implements a MST over
 a network.
 
 This project depends on Floodlight, which can be found here:
- [Floodlight project on GitHub](https://github.com/floodlight/floodlight)
+ [Floodlight project on GitHub](https://github.com/floodlight/floodlight).
 
 It has been tested with Mininet, which can be found here:
- [Mininet project on GitHub](https://github.com/mininet/mininet)
+ [Mininet project on GitHub](https://github.com/mininet/mininet).
 
 
 License
@@ -17,7 +17,7 @@ License
 This sofware is licensed under the Apache License, Version 2.0.
 
 Information can be found here:
- [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0)
+ [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0).
 
 
 Installation and configuration
@@ -46,7 +46,7 @@ In the scripts folder this projects provides some utility file that could be hel
 
  * ``four-switch.py`` is a mininet custom topology file which permits to create a four switches full meshed topology;
  * ``startTopo.sh`` is a bash script which permits to start mininet with the four-switch topology (it assumes mininet
-   is installed in the home for the user, and that the ``four-switch.py`` file is copied in the custom folder inside mininet);
+   is installed in the home for the user, and that the ``four-switch.py`` file is copied in the ``custom`` folder inside mininet);
  * ``viewGreenMSTapis.sh`` is a bash script that permits to query and show the results for the REST APIs;
  * ``setTopoCosts.sh`` is a bash script that permits to upload new topology costs via the REST APIs.
 
@@ -64,10 +64,32 @@ This project offers the following REST APIs:
    in the topology
 
 
-Test
-====
+Tests
+=====
 
-To test this software implementation the following steps have been executed:
+In this section a typical use case will be presented to show how this project could be used to achieve important results in 
+network optimization and configuration.
+
+Use case
+--------
+
+The following use case has been implemented:
+ * realization of a four switches full mashed topology with mininet;
+ * GreenMST needs to compute a minimum spanning tree and send commands to close un-necessary ports to switches so that
+   loops are avoided;
+ * visualization of the MST deployed on the network via the REST APIs developed by GreenMST;
+ * modification of the costs for all links to prove that GreenMST is able to compute a new minimum spanning tree on
+   the provided costs and so adapt the network to the updated situation.
+
+With this use case it is possible to prove that the GreenMST is working by identifying the correct spanning tree which
+optimizes all switch-to-switch connections. It is also possible to prove that by creating an agent which senses the network
+conditions and triggers an update of link costs, GreenMST could be able to real-time adapt the network to changing
+configurations.
+
+Step by step tutorial
+---------------------
+
+To test this software a implementation the following steps have been executed:
 
  * We have defined a four switches fully mashed topology in mininet.
    The costs for all edges of the topology are as shown by command:
@@ -164,8 +186,8 @@ To test this software implementation the following steps have been executed:
    Which represent the minimum spaning tree computed on the topology (it is possible to verify that only edges with
    low costs have been kept open).
 
- * This MST has also been deployed on the switch by closing the ports for the unused links.
-   For example with mininet it is porrible to verify that the port on swtich 4 has been closed with the command:
+ * This MST has also been deployed on the switches by closing the ports for the unused links.
+   For example with mininet it is possible to verify that the port on switch 4 has been closed with the command:
    ```
    mininet> s4 dpctl show tcp:127.0.0.1:6637
    features_reply (xid=0x4a7cacc5): ver:0x1, dpid:4
