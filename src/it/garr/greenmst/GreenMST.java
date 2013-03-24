@@ -166,8 +166,11 @@ public class GreenMST implements IFloodlightModule, IGreenMSTService, ITopologyL
 	
 	    	//portMod.setHardwareAddress(switchObj.getPort(portNum).getHardwareAddress());
 	    	portMod.setPortNumber(portNum);
-	    	portMod.setMask(OFPortConfig.OFPPC_PORT_DOWN.getValue());
-	    	portMod.setConfig((open == true) ? 0 : 1);
+	    	//portMod.setMask(OFPortConfig.OFPPC_PORT_DOWN.getValue());
+	    	//portMod.setMask(OFPortConfig.OFPPFL_NO_RECV_STP.getValue());
+	    	portMod.setMask(OFPortConfig.OFPPC_NO_RECV_STP.getValue() | OFPortConfig.OFPPC_NO_RECV.getValue());
+	    	
+	    	portMod.setConfig((open == true) ? 0 : 63);
 	    	
 	    	if (portMod.getHardwareAddress() != null) logger.info("Sending ModPort command to switch {} - {} port {} (hw address {}).", new Object[] { switchId, ((open == true) ? "opening" : "closing"), portNum, HexString.toHexString(portMod.getHardwareAddress())});
 	    	else logger.info("Sending ModPort command to switch {} - {} port {}.", new Object[] { switchId, ((open == true) ? "opening" : "closing"), portNum});

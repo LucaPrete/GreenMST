@@ -1,8 +1,9 @@
 GreenMST floodlight module
 ==========================
 
-Implementation of module for Floodligth which implements a MST over
-a network.
+Implementation of module for Floodligth which implements a MST over a network.
+The Floodlight controller implements the Openflow protocol, which specifications can be found here:
+ [Openflow spec](http://www.openflow.org/documents/openflow-spec-v1.0.0.pdf)
 
 This project depends on Floodlight, which can be found here:
  [Floodlight project on GitHub](https://github.com/floodlight/floodlight).
