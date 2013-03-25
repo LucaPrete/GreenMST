@@ -4,11 +4,10 @@ import it.garr.greenmst.web.serializers.TopologyCostsJSONDeserializer;
 import it.garr.greenmst.web.serializers.TopologyCostsJSONSerializer;
 
 import java.io.IOException;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Properties;
-
-import net.floodlightcontroller.core.module.FloodlightModuleContext;
 
 import org.codehaus.jackson.map.annotate.JsonDeserialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
@@ -19,50 +18,51 @@ import org.slf4j.LoggerFactory;
 @JsonDeserialize(using=TopologyCostsJSONDeserializer.class)
 public class TopologyCosts {
 	
-	protected FloodlightModuleContext context = null;
 	protected static Logger logger = LoggerFactory.getLogger(TopologyCosts.class);
-	private static Properties prop = null;
+	private static HashMap<String, Integer> costs = new HashMap<String, Integer>();
 	public static final int DEFAULT_COST = 1;
 	
 	public TopologyCosts() {
-		prop = new Properties(); 
 		try {
 			//load a properties file from class path, inside static method
+			Properties prop = new Properties(); 
 			prop.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("nodecosts.properties"));
+			 
+			Enumeration<?> e = prop.propertyNames();
+		    while (e.hasMoreElements()) {
+		      String key = (String) e.nextElement();
+		      Integer value = Integer.parseInt(prop.getProperty(key));
+		      costs.put(key, value);
+		    }
 		}  catch (IOException ex) {
 			logger.error("Error while reading nodecosts.properties file.", ex);
 		}
 	}
 	
-	public void setPropValues(HashMap<String, String> map) {
-		prop = new Properties();
-		for (Entry<String, String> entry : map.entrySet()) {
-			prop.setProperty(entry.getKey(), entry.getValue());
-		}
+	public void setCostsValues(HashMap<String, Integer> map) {
+		//costs.clear();
+		costs.putAll(map);
 	}
 	
-	public Properties getProp() {
-		return prop;
+	public HashMap<String, Integer> getCosts() {
+		return costs;
 	}
 	
 	public int getCost(long source, long destination) {
-		int cost = DEFAULT_COST;
-		
-		if (prop != null) {
-			String sCost = prop.getProperty(source + "," + destination);
-			if (sCost == null) sCost = prop.getProperty(destination + "," + source);
-			if (sCost != null) cost = Integer.parseInt(sCost);
-			return cost;
+		if (costs != null) {
+			Integer sCost = costs.get(source + "," + destination);
+			if (sCost == null) sCost = costs.get(destination + "," + source);
+			if (sCost != null) return sCost;
 		}
 		
-		return cost;
+		return DEFAULT_COST;
 	}
 	
 	public String toString() {
-		if (prop == null) return "(null)";
+		if (costs == null) return "(null)";
 		
 		String s = "";
-		for (Entry<Object, Object> curProp: prop.entrySet()) {
+		for (Entry<String, Integer> curProp: costs.entrySet()) {
 			if (!s.equals("")) s += "\n";
 			s += curProp.getKey() + " => " + curProp.getValue();
 		}

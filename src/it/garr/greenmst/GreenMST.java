@@ -48,19 +48,19 @@ import org.slf4j.LoggerFactory;
  */
 
 public class GreenMST implements IFloodlightModule, IGreenMSTService, ITopologyListener {
-
-	protected FloodlightModuleContext context = null;	
+	
+	protected static Logger logger = LoggerFactory.getLogger(GreenMST.class);
+	
+	// Service references
 	protected IRestApiService restApi = null;
 	protected IFloodlightProviderService floodlightProvider = null;
 	protected ITopologyService topology = null;
-	protected static Logger logger = null;
 	
 	// Data structures for caching algorithm results
 	protected HashSet<LinkWithCost> topoEdges = new HashSet<LinkWithCost>();
 	protected HashSet<LinkWithCost> redundantEdges = new HashSet<LinkWithCost>();
 	
 	private IMinimumSpanningTreeAlgorithm algorithm = new KruskalAlgorithm();
-	public TopologyCosts costs = new TopologyCosts();
 	
 	@Override
 	public void topologyChanged() {
@@ -68,7 +68,7 @@ public class GreenMST implements IFloodlightModule, IGreenMSTService, ITopologyL
 			logger.trace("Received topology update event {}.", update);
 			
 			if (update.getOperation().equals(ILinkDiscovery.UpdateOperation.LINK_REMOVED) || update.getOperation().equals(ILinkDiscovery.UpdateOperation.LINK_UPDATED)) {
-				LinkWithCost link = new LinkWithCost(context, update.getSrc(), update.getSrcPort(), update.getDst(), update.getDstPort());
+				LinkWithCost link = new LinkWithCost(update.getSrc(), update.getSrcPort(), update.getDst(), update.getDstPort());
 				logger.trace("Considering link {}.", link);
 				
 				logger.trace("topoEdges = {}.", new Object[] { printEdges(topoEdges) });
@@ -166,9 +166,9 @@ public class GreenMST implements IFloodlightModule, IGreenMSTService, ITopologyL
 	
 	    	//portMod.setHardwareAddress(switchObj.getPort(portNum).getHardwareAddress());
 	    	portMod.setPortNumber(portNum);
-	    	portMod.setMask(OFPortConfig.OFPPC_PORT_DOWN.getValue());
+	    	//portMod.setMask(OFPortConfig.OFPPC_PORT_DOWN.getValue());
 	    	//portMod.setMask(OFPortConfig.OFPPFL_NO_RECV_STP.getValue());
-	    	//portMod.setMask(OFPortConfig.OFPPC_NO_RECV_STP.getValue() | OFPortConfig.OFPPC_NO_RECV.getValue());
+	    	portMod.setMask(OFPortConfig.OFPPC_NO_RECV_STP.getValue() | OFPortConfig.OFPPC_NO_RECV.getValue());
 	    	
 	    	portMod.setConfig((open == true) ? 0 : 63);
 	    	
@@ -215,12 +215,10 @@ public class GreenMST implements IFloodlightModule, IGreenMSTService, ITopologyL
 	}
 
 	@Override
-	public void init(FloodlightModuleContext ctx) throws FloodlightModuleException {
-		context = ctx;
+	public void init(FloodlightModuleContext context) throws FloodlightModuleException {
 		floodlightProvider = context.getServiceImpl(IFloodlightProviderService.class);
 		restApi = context.getServiceImpl(IRestApiService.class);
 		topology = context.getServiceImpl(ITopologyService.class);
-		logger = LoggerFactory.getLogger(GreenMST.class);
 	}
 
 	@Override
@@ -249,12 +247,15 @@ public class GreenMST implements IFloodlightModule, IGreenMSTService, ITopologyL
 	
 	@Override
 	public TopologyCosts getCosts() {
-		return costs;
+		return TopologyCostsLoader.getTopologyCosts();
 	}
 	
 	@Override
 	public void setCosts(TopologyCosts newCosts) {
-		costs = newCosts;
+		TopologyCosts costs = getCosts();
+		//costs.getCosts().clear();
+		costs.getCosts().putAll(newCosts.getCosts());
+		
 		updateLinks();
 	}
 }

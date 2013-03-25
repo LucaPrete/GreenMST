@@ -1,6 +1,3 @@
-
-
-
 package it.garr.greenmst.web.serializers;
 
 import it.garr.greenmst.types.TopologyCosts;
@@ -33,7 +30,7 @@ public class TopologyCostsJSONDeserializer extends JsonDeserializer<TopologyCost
 	public TopologyCosts deserialize(JsonParser jParser, DeserializationContext context)
 			throws IOException, JsonProcessingException {
 		
-		HashMap<String, String> map = new HashMap<String, String>();
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
 		jParser.nextToken();
         
         if (jParser.getCurrentToken() != JsonToken.START_OBJECT) throw new IOException("Expected START_OBJECT");
@@ -44,13 +41,13 @@ public class TopologyCostsJSONDeserializer extends JsonDeserializer<TopologyCost
             String name = jParser.getCurrentName();
             jParser.nextToken();
             if (jParser.getText().equals("")) continue;
-            String value = jParser.getText();
+            Integer value = Integer.parseInt(jParser.getText());
             
             map.put(name, value);
         }
     	
         TopologyCosts costs = new TopologyCosts();
-		costs.setPropValues(map);
+		costs.setCostsValues(map);
 		
 		return costs;
 	}

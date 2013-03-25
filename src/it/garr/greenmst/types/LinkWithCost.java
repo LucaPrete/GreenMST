@@ -1,8 +1,8 @@
 package it.garr.greenmst.types;
 
 import it.garr.greenmst.IGreenMSTService;
+import it.garr.greenmst.TopologyCostsLoader;
 import it.garr.greenmst.web.serializers.LinkWithCostJSONSerializer;
-import net.floodlightcontroller.core.module.FloodlightModuleContext;
 import net.floodlightcontroller.routing.Link;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
@@ -27,23 +27,18 @@ import org.slf4j.LoggerFactory;
 @JsonSerialize(using=LinkWithCostJSONSerializer.class)
 public class LinkWithCost extends Link {
     
-	private FloodlightModuleContext context = null;
-	private TopologyCosts costs = null; 
 	protected Logger logger = LoggerFactory.getLogger(LinkWithCost.class);
 	
-	public LinkWithCost(FloodlightModuleContext ctx, long srcId, int srcPort, long dstId, int dstPort) {
+	public LinkWithCost(long srcId, int srcPort, long dstId, int dstPort) {
 		super(srcId, srcPort, dstId, dstPort);
-		context = ctx;
-		costs = context.getServiceImpl(IGreenMSTService.class).getCosts();
 	}
 	
-	public LinkWithCost(FloodlightModuleContext ctx, Link l) {
+	public LinkWithCost(IGreenMSTService greenMST, Link l) {
 		super(l.getSrc(), l.getSrcPort(), l.getDst(), l.getDstPort());
-		context = ctx;
-		costs = context.getServiceImpl(IGreenMSTService.class).getCosts();
 	}
 	
 	public int getCost() {
+		TopologyCosts costs = TopologyCostsLoader.getTopologyCosts();
 		return costs.getCost(this.getSrc(), this.getDst());
 	}
 	
@@ -58,6 +53,6 @@ public class LinkWithCost extends Link {
 	}
 	
 	public LinkWithCost getInverse() {
-		return new LinkWithCost(context, this.getDst(), this.getDstPort(), this.getSrc(), this.getSrcPort());
+		return new LinkWithCost(this.getDst(), this.getDstPort(), this.getSrc(), this.getSrcPort());
 	}
 }
