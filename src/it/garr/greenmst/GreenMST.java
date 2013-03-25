@@ -155,29 +155,6 @@ public class GreenMST implements IFloodlightModule, IGreenMSTService, ITopologyL
     	return redundantEdges;
     }
     
-<<<<<<< HEAD
-	private void modPort(long switchId, short portNum, boolean open) throws InterruptedException, ExecutionException, IOException {
-    	OFPortMod portMod = new OFPortMod();
-
-    	// Search ports for finding hardware address
-    	for (OFPhysicalPort curPort : floodlightProvider.getSwitches().get(switchId).getFeaturesReplyFromSwitch().get().getPorts()) {
-    		if (curPort.getPortNumber() == portNum) portMod.setHardwareAddress(curPort.getHardwareAddress());
-    	}
-
-<<<<<<< HEAD
-    	//portMod.setHardwareAddress(floodlightProvider.getSwitches().get(switchId).getPort(portNum).getHardwareAddress());
-=======
-    	//portMod.setHardwareAddress(switchObj.getPort(portNum).getHardwareAddress());
->>>>>>> e58c9214a80e2bf28eb41c595e939c611d449bf6
-    	portMod.setPortNumber(portNum);
-    	portMod.setMask(OFPortConfig.OFPPC_PORT_DOWN.getValue());
-    	portMod.setConfig((open == true) ? 0 : 1);
-    	
-    	if (portMod.getHardwareAddress() != null) logger.info("Sending ModPort command to switch {} - {} port {} (hw address {}).", new Object[] { switchId, ((open == true) ? "opening" : "closing"), portNum, HexString.toHexString(portMod.getHardwareAddress())});
-    	else logger.info("Sending ModPort command to switch {} - {} port {}.", new Object[] { switchId, ((open == true) ? "opening" : "closing"), portNum});
-    	
-		floodlightProvider.getSwitches().get(switchId).write(portMod, null);
-=======
 	private void modPort(long switchId, short portNum, boolean open) {
 		try {
 	    	OFPortMod portMod = new OFPortMod();
@@ -189,8 +166,11 @@ public class GreenMST implements IFloodlightModule, IGreenMSTService, ITopologyL
 	
 	    	//portMod.setHardwareAddress(switchObj.getPort(portNum).getHardwareAddress());
 	    	portMod.setPortNumber(portNum);
-	    	portMod.setMask(OFPortConfig.OFPPC_PORT_DOWN.getValue());
-	    	portMod.setConfig((open == true) ? 0 : 1);
+	    	//portMod.setMask(OFPortConfig.OFPPC_PORT_DOWN.getValue());
+	    	//portMod.setMask(OFPortConfig.OFPPFL_NO_RECV_STP.getValue());
+	    	portMod.setMask(OFPortConfig.OFPPC_NO_RECV_STP.getValue() | OFPortConfig.OFPPC_NO_RECV.getValue());
+	    	
+	    	portMod.setConfig((open == true) ? 0 : 63);
 	    	
 	    	if (portMod.getHardwareAddress() != null) logger.info("Sending ModPort command to switch {} - {} port {} (hw address {}).", new Object[] { switchId, ((open == true) ? "opening" : "closing"), portNum, HexString.toHexString(portMod.getHardwareAddress())});
 	    	else logger.info("Sending ModPort command to switch {} - {} port {}.", new Object[] { switchId, ((open == true) ? "opening" : "closing"), portNum});
@@ -200,7 +180,6 @@ public class GreenMST implements IFloodlightModule, IGreenMSTService, ITopologyL
 		catch (Exception e) {
 			logger.error("Error while {} port {} on switch {}.", new Object[] { (open) ? "opening" : "closing", switchId, portNum }, e);
 		}
->>>>>>> 79033d1ecf04938bbc4461cf2e127810cef54682
     }
     
 	protected String printEdges(Iterable<LinkWithCost> edges) {
