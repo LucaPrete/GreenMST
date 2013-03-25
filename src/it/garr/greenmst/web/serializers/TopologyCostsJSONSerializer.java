@@ -6,8 +6,8 @@ package it.garr.greenmst.web.serializers;
 import it.garr.greenmst.types.TopologyCosts;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map.Entry;
-import java.util.Properties;
 
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.JsonProcessingException;
@@ -35,9 +35,9 @@ public class TopologyCostsJSONSerializer extends JsonSerializer<TopologyCosts> {
     	
         jGen.writeStartObject();
         
-        Properties prop = costs.getProp();
-        for (Entry<Object, Object> curProp : prop.entrySet()) {
-        	jGen.writeNumberField(curProp.getKey().toString(), Integer.parseInt(curProp.getValue().toString())); 
+        HashMap<String, Integer> prop = costs.getCosts();
+        for (Entry<String, Integer> curProp : prop.entrySet()) {
+        	jGen.writeNumberField(curProp.getKey(), curProp.getValue()); 
         }
         
         jGen.writeEndObject();
