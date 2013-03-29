@@ -33,6 +33,12 @@ public class LinkWithCost extends Link {
 		super(srcId, srcPort, dstId, dstPort);
 	}
 	
+	public LinkWithCost(long srcId, int srcPort, long dstId, int dstPort, int cost) {
+		super(srcId, srcPort, dstId, dstPort);
+		TopologyCosts costs = TopologyCostsLoader.getTopologyCosts();
+		costs.getCost(srcId, dstId);
+	}
+	
 	public LinkWithCost(IGreenMSTService greenMST, Link l) {
 		super(l.getSrc(), l.getSrcPort(), l.getDst(), l.getDstPort());
 	}

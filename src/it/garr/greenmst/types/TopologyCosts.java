@@ -48,6 +48,13 @@ public class TopologyCosts {
 		return costs;
 	}
 	
+	public void setCost(long source, long destination, int cost) {
+		if (costs != null) {
+			if (costs.get(source + "," + destination) != null) costs.put(source + "," + destination, cost);
+			if (costs.get(destination + "," + source) != null) costs.put(destination + "," + source, cost);
+		}
+	}
+	
 	public int getCost(long source, long destination) {
 		if (costs != null) {
 			Integer sCost = costs.get(source + "," + destination);
