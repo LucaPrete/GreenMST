@@ -15,6 +15,7 @@ import java.util.Set;
 import java.util.Vector;
 
 import net.floodlightcontroller.core.IFloodlightProviderService;
+import net.floodlightcontroller.core.IOFSwitch;
 import net.floodlightcontroller.core.module.FloodlightModuleContext;
 import net.floodlightcontroller.core.module.FloodlightModuleException;
 import net.floodlightcontroller.core.module.IFloodlightModule;
@@ -92,7 +93,7 @@ public class GreenMST implements IFloodlightModule, IGreenMSTService, ITopologyL
 		}
 	}
 	
-	private void updateLinks() {
+	protected void updateLinks() {
 		logger.debug("Updating MST because of topology change...");
 		HashSet<LinkWithCost> oldRedundantEdges = this.redundantEdges,
 							  newRedundantEdges = null;
@@ -142,7 +143,7 @@ public class GreenMST implements IFloodlightModule, IGreenMSTService, ITopologyL
         logger.trace("New redundantEdges = {}.", new Object[] { printEdges(redundantEdges) });
     }
 	
-    private HashSet<LinkWithCost> findRedundantEdges(Vector<LinkWithCost> mstEdges) {
+	protected HashSet<LinkWithCost> findRedundantEdges(Vector<LinkWithCost> mstEdges) {
     	HashSet<LinkWithCost> redundantEdges = new HashSet<LinkWithCost>();
     	
     	for (LinkWithCost lt: topoEdges) {
@@ -155,16 +156,24 @@ public class GreenMST implements IFloodlightModule, IGreenMSTService, ITopologyL
     	return redundantEdges;
     }
     
-	private void modPort(long switchId, short portNum, boolean open) {
+	protected void modPort(long switchId, short portNum, boolean open) {
 		try {
 	    	OFPortMod portMod = new OFPortMod();
+	    	IOFSwitch sw = floodlightProvider.getSwitches().get(switchId);
 	
 	    	// Search ports for finding hardware address
-	    	for (OFPhysicalPort curPort : floodlightProvider.getSwitches().get(switchId).getFeaturesReplyFromSwitch().get().getPorts()) {
-	    		if (curPort.getPortNumber() == portNum) portMod.setHardwareAddress(curPort.getHardwareAddress());
+	    	// portMod.setHardwareAddress(sw.getPort(portNum).getHardwareAddress());
+	    	try {
+		    	for (OFPhysicalPort curPort : sw.getFeaturesReplyFromSwitch().get().getPorts()) {
+		    		if (curPort.getPortNumber() == portNum) portMod.setHardwareAddress(curPort.getHardwareAddress());
+		    	}
+	    	} catch (Exception e) {
+	    		logger.info("Error while retrieving port hardware address from switch. Try using switch address.");
+	    		for (OFPhysicalPort curPort : sw.getPorts()) {
+	    			if (curPort.getPortNumber() == portNum) portMod.setHardwareAddress(curPort.getHardwareAddress());
+	    		}
 	    	}
 	
-	    	//portMod.setHardwareAddress(switchObj.getPort(portNum).getHardwareAddress());
 	    	portMod.setPortNumber(portNum);
 	    	//portMod.setMask(OFPortConfig.OFPPC_PORT_DOWN.getValue());
 	    	portMod.setMask(OFPortConfig.OFPPC_NO_FLOOD.getValue());
@@ -174,7 +183,7 @@ public class GreenMST implements IFloodlightModule, IGreenMSTService, ITopologyL
 	    	if (portMod.getHardwareAddress() != null) logger.info("Sending ModPort command to switch {} - {} port {} (hw address {}).", new Object[] { switchId, ((open == true) ? "opening" : "closing"), portNum, HexString.toHexString(portMod.getHardwareAddress())});
 	    	else logger.info("Sending ModPort command to switch {} - {} port {}.", new Object[] { switchId, ((open == true) ? "opening" : "closing"), portNum});
 	    	
-			floodlightProvider.getSwitches().get(switchId).write(portMod, null);
+	    	sw.write(portMod, null);
 		}
 		catch (Exception e) {
 			logger.error("Error while {} port {} on switch {}.", new Object[] { (open) ? "opening" : "closing", switchId, portNum }, e);
@@ -223,12 +232,16 @@ public class GreenMST implements IFloodlightModule, IGreenMSTService, ITopologyL
 	@Override
 	public void startUp(FloodlightModuleContext context) {
 		if (topology != null) topology.addListener(this);
-		restApi.addRestletRoutable(new GreenMSTWebRoutable());
+		if (restApi != null) restApi.addRestletRoutable(new GreenMSTWebRoutable());
 	}
 	
 	@Override
 	public Set<LinkWithCost> getTopoEdges() {
 		return topoEdges;
+	}
+	
+	protected void setTopoEdges(HashSet<LinkWithCost> topoEdges) {
+		this.topoEdges = topoEdges;
 	}
 	
 	@SuppressWarnings("unchecked")
