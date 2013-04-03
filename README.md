@@ -30,6 +30,7 @@ must be copied within the root folder of this project.
 At this point the project can be imported into Eclipse and run right away.
 
 BLOCK OR TURN OFF PORTS
+
 By deafult, ports are blocked to generate the minimum spanning tree of the network. At the beginning ports were
 turned off (to save energy in DC) but some difficulties occurred. Infact, turning off ports on the switches send to the
 controller a link removed message. The controller is unable to understand if a link goes down because of its decision
@@ -39,6 +40,7 @@ to the previous behaviour:
 - Then, uncomment as follows line 178 in GreenMST.java: portMod.setMask(OFPortConfig.OFPPC_PORT_DOWN.getValue());
 
 RUNNABLE FILE
+
 It is possible to create a ``greenmst.jar`` with the compiled files from this project.
 According to Floodlight command sintax, you can integrate the jar file to your Floodlight installation running the
 command:
