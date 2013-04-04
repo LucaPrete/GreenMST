@@ -29,7 +29,23 @@ must be copied within the root folder of this project.
 
 At this point the project can be imported into Eclipse and run right away.
 
-It is also possible to create a ``greenmst.jar`` with the compiled files from this project, and run it with the command:
+Block or turn-off ports
+-----------------------
+
+By deafult, ports are blocked to generate the minimum spanning tree of the network. At the beginning ports were
+turned off (to save energy in DC) but some difficulties occurred. Infact, turning off ports on the switches send to the
+controller a link removed message. The controller is unable to understand if a link goes down because of its decision
+or a manual setup. We suggest to leave the blocking decision on, anyway the following step can be performed to change
+to the previous behaviour:
+- Comment as follows line 179 in GreenMST.java file: // portMod.setMask(OFPortConfig.OFPPC_NO_FLOOD.getValue()); 
+- Then, uncomment as follows line 178 in GreenMST.java: portMod.setMask(OFPortConfig.OFPPC_PORT_DOWN.getValue());
+
+Create a runnable file
+----------------------
+
+It is possible to create a ``greenmst.jar`` with the compiled files from this project.
+According to Floodlight command sintax, you can integrate the jar file to your Floodlight installation running the
+command:
 ```
 java -cp floodlight.jar:greenmst.jar -Dlogback.configurationFile=logback.xml net.floodlightcontroller.core.Main -cf floodlight.properties
 ```
