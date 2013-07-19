@@ -1,4 +1,4 @@
-GreenMST floodlight module
+GreenMST Floodlight module
 ==========================
 
 Implementation of module for Floodligth which implements a MST over a network.
