@@ -40,8 +40,8 @@ to the previous behaviour:
 - Comment as follows line 179 in GreenMST.java file: // portMod.setMask(OFPortConfig.OFPPC_NO_FLOOD.getValue()); 
 - Then, uncomment as follows line 178 in GreenMST.java: portMod.setMask(OFPortConfig.OFPPC_PORT_DOWN.getValue());
 
-Create a runnable file
-----------------------
+Runnable file
+-------------
 
 It is possible to create a ``greenmst.jar`` with the compiled files from this project.
 According to Floodlight command sintax, you can integrate the jar file to your Floodlight installation running the
