@@ -43,7 +43,10 @@ to the previous behaviour:
 Runnable file
 -------------
 
-It is possible to create a ``greenmst.jar`` with the compiled files from this project.
+For production environment, a jar version of the module is downloadable as well from the root directory of this
+GitHub repository.
+
+Alternatively, it is possible to create a ``greenmst.jar`` with the compiled files from this project.
 According to Floodlight command sintax, you can integrate the jar file to your Floodlight installation running the
 command:
 ```
