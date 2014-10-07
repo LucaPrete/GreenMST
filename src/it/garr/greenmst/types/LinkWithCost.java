@@ -5,9 +5,10 @@ import it.garr.greenmst.TopologyCostsLoader;
 import it.garr.greenmst.web.serializers.LinkWithCostJSONSerializer;
 import net.floodlightcontroller.routing.Link;
 
-import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 /**
  * Extends the Link class from net.floodlightcontroller.routing to implement Comparable and Comparator interfaces.

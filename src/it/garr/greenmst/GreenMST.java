@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
@@ -26,7 +27,6 @@ import net.floodlightcontroller.restserver.IRestApiService;
 import net.floodlightcontroller.topology.ITopologyListener;
 import net.floodlightcontroller.topology.ITopologyService;
 
-import org.openflow.protocol.OFPhysicalPort;
 import org.openflow.protocol.OFPhysicalPort.OFPortConfig;
 import org.openflow.protocol.OFPortMod;
 import org.openflow.util.HexString;
@@ -64,8 +64,8 @@ public class GreenMST implements IFloodlightModule, IGreenMSTService, ITopologyL
 	private IMinimumSpanningTreeAlgorithm algorithm = new KruskalAlgorithm();
 	
 	@Override
-	public void topologyChanged() {
-		for (LDUpdate update : topology.getLastLinkUpdates()) {
+	public void topologyChanged(List<LDUpdate> linkUpdates) {
+		for (LDUpdate update : linkUpdates) {
 			logger.trace("Received topology update event {}.", update);
 			
 			if (update.getOperation().equals(ILinkDiscovery.UpdateOperation.LINK_REMOVED) || update.getOperation().equals(ILinkDiscovery.UpdateOperation.LINK_UPDATED)) {
@@ -159,19 +159,15 @@ public class GreenMST implements IFloodlightModule, IGreenMSTService, ITopologyL
 	protected void modPort(long switchId, short portNum, boolean open) {
 		try {
 	    	OFPortMod portMod = new OFPortMod();
-	    	IOFSwitch sw = floodlightProvider.getSwitches().get(switchId);
+	    	IOFSwitch sw = floodlightProvider.getAllSwitchMap().get(switchId);
 	
 	    	// Search ports for finding hardware address
 	    	// portMod.setHardwareAddress(sw.getPort(portNum).getHardwareAddress());
 	    	try {
-		    	for (OFPhysicalPort curPort : sw.getFeaturesReplyFromSwitch().get().getPorts()) {
-		    		if (curPort.getPortNumber() == portNum) portMod.setHardwareAddress(curPort.getHardwareAddress());
-		    	}
+	    		portMod.setHardwareAddress(sw.getPort(portNum).getHardwareAddress());
 	    	} catch (Exception e) {
 	    		logger.info("Error while retrieving port hardware address from switch. Try using switch address.");
-	    		for (OFPhysicalPort curPort : sw.getPorts()) {
-	    			if (curPort.getPortNumber() == portNum) portMod.setHardwareAddress(curPort.getHardwareAddress());
-	    		}
+	    		portMod.setHardwareAddress(sw.getPort((short) 0).getHardwareAddress());
 	    	}
 	
 	    	portMod.setPortNumber(portNum);

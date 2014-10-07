@@ -9,10 +9,11 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Properties;
 
-import org.codehaus.jackson.map.annotate.JsonDeserialize;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @JsonSerialize(using=TopologyCostsJSONSerializer.class)
 @JsonDeserialize(using=TopologyCostsJSONDeserializer.class)

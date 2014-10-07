@@ -17,16 +17,17 @@ import java.util.Vector;
 import net.floodlightcontroller.core.FloodlightContext;
 import net.floodlightcontroller.core.IFloodlightProviderService;
 import net.floodlightcontroller.core.IOFSwitch;
+import net.floodlightcontroller.core.ImmutablePort;
 import net.floodlightcontroller.core.internal.OFSwitchImpl;
 import net.floodlightcontroller.core.module.FloodlightModuleContext;
 import net.floodlightcontroller.test.FloodlightTestCase;
 
 import org.easymock.Capture;
 import org.easymock.EasyMock;
+import org.easymock.IAnswer;
 import org.junit.Before;
 import org.junit.Test;
 import org.openflow.protocol.OFMatch;
-import org.openflow.protocol.OFPhysicalPort;
 import org.openflow.protocol.OFPhysicalPort.OFPortConfig;
 import org.openflow.protocol.OFPortMod;
 import org.openflow.util.HexString;
@@ -201,12 +202,12 @@ public class GreenMSTTest extends FloodlightTestCase {
 	}
 	
 	private IOFSwitch createSwitch(long switchId, List<Short> portNums, List<byte[]> hwAddrs, Capture<OFPortMod> msgCapture) throws Exception {
-        List<OFPhysicalPort> ports = new Vector<OFPhysicalPort>();
+        final List<ImmutablePort> ports = new Vector<ImmutablePort>();
         
         for (int i = 0; i < portNums.size(); ++i) {
-        	OFPhysicalPort curPort = new OFPhysicalPort();
-        	curPort.setHardwareAddress(hwAddrs.get(i));
-        	curPort.setPortNumber(portNums.get(i));
+        	ImmutablePort curPort = EasyMock.createMock(ImmutablePort.class);
+        	expect(curPort.getHardwareAddress()).andReturn(hwAddrs.get(i));
+        	expect(curPort.getPortNumber()).andReturn(portNums.get(i));
         	ports.add(curPort);
         }
 		
@@ -214,8 +215,13 @@ public class GreenMSTTest extends FloodlightTestCase {
 		expect(sw.getId()).andReturn(switchId).anyTimes();
         expect(sw.getBuffers()).andReturn(1000).anyTimes();
         expect(sw.getStringId()).andReturn(HexString.toHexString(switchId)).anyTimes();
-        expect(sw.getPorts()).andReturn(ports).anyTimes();
-        expect(sw.getFeaturesReplyFromSwitch()).andReturn(null).anyTimes();
+        expect(sw.getPort(EasyMock.isA(Short.class))).andAnswer(new IAnswer<ImmutablePort>() {
+			@Override
+			public ImmutablePort answer() throws Throwable {
+				return ports.get((Short) EasyMock.getCurrentArguments()[0]) ;
+			}
+        	
+		}).anyTimes();
         
         Capture<FloodlightContext> context = new Capture<FloodlightContext>();
         sw.write(capture(msgCapture), capture(context));

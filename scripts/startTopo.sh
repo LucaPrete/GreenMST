@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sudo mn --controller=remote,ip=127.0.0.1 --custom ~/mininet/custom/four-switch.py --topo=foursw --mac
+sudo mn --controller=remote,ip=127.0.0.1 --custom four-switch.py --topo=foursw --mac
 
 #Usage: mn [options]
 #(type mn -h for details)
