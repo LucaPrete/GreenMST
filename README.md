@@ -1,4 +1,4 @@
-GreenMST floodlight module
+GreenMST Floodlight module
 ==========================
 
 Implementation of module for Floodligth which implements a MST over a network.
@@ -40,10 +40,20 @@ to the previous behaviour:
 - Comment as follows line 179 in GreenMST.java file: // portMod.setMask(OFPortConfig.OFPPC_NO_FLOOD.getValue()); 
 - Then, uncomment as follows line 178 in GreenMST.java: portMod.setMask(OFPortConfig.OFPPC_PORT_DOWN.getValue());
 
+<<<<<<< HEAD
 Create a runnable file
 ----------------------
 
 It is possible to create a ``greenmst.jar`` with the compiled files from this project.
+=======
+Runnable file
+-------------
+
+For production environment, a jar version of the module is downloadable as well from the root directory of this
+GitHub repository.
+
+Alternatively, it is possible to create a ``greenmst.jar`` with the compiled files from this project.
+>>>>>>> 68694ed7fdf8eb31c74ee228389dee4fec026f63
 According to Floodlight command sintax, you can integrate the jar file to your Floodlight installation running the
 command:
 ```
