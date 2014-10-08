@@ -206,8 +206,9 @@ public class GreenMSTTest extends FloodlightTestCase {
         
         for (int i = 0; i < portNums.size(); ++i) {
         	ImmutablePort curPort = EasyMock.createMock(ImmutablePort.class);
-        	expect(curPort.getHardwareAddress()).andReturn(hwAddrs.get(i));
-        	expect(curPort.getPortNumber()).andReturn(portNums.get(i));
+        	expect(curPort.getHardwareAddress()).andReturn(hwAddrs.get(i)).anyTimes();
+        	expect(curPort.getPortNumber()).andReturn(portNums.get(i)).anyTimes();
+        	replay(curPort);
         	ports.add(curPort);
         }
 		
@@ -215,12 +216,18 @@ public class GreenMSTTest extends FloodlightTestCase {
 		expect(sw.getId()).andReturn(switchId).anyTimes();
         expect(sw.getBuffers()).andReturn(1000).anyTimes();
         expect(sw.getStringId()).andReturn(HexString.toHexString(switchId)).anyTimes();
-        expect(sw.getPort(EasyMock.isA(Short.class))).andAnswer(new IAnswer<ImmutablePort>() {
+        expect(sw.getPort(EasyMock.anyShort())).andAnswer(new IAnswer<ImmutablePort>() {
 			@Override
 			public ImmutablePort answer() throws Throwable {
-				return ports.get((Short) EasyMock.getCurrentArguments()[0]) ;
+				short portNum = (Short) EasyMock.getCurrentArguments()[0];
+				for (int i = 0; i < ports.size(); ++i) {
+					System.err.println("serarching port " + portNum + ", looking port " + ports.get(i).getPortNumber());
+					if (portNum == ports.get(i).getPortNumber()) {
+						return ports.get(i);
+					}
+				}
+				throw new Exception("Port not found on switch.");
 			}
-        	
 		}).anyTimes();
         
         Capture<FloodlightContext> context = new Capture<FloodlightContext>();

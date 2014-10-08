@@ -166,8 +166,8 @@ public class GreenMST implements IFloodlightModule, IGreenMSTService, ITopologyL
 	    	try {
 	    		portMod.setHardwareAddress(sw.getPort(portNum).getHardwareAddress());
 	    	} catch (Exception e) {
-	    		logger.info("Error while retrieving port hardware address from switch. Try using switch address.");
-	    		portMod.setHardwareAddress(sw.getPort((short) 0).getHardwareAddress());
+	    		logger.error("Error while retrieving port hardware address from switch. Try using switch address.");
+	    		throw e;
 	    	}
 	
 	    	portMod.setPortNumber(portNum);
