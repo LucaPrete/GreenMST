@@ -8,3 +8,4 @@
 bin/*
 floodlight-src
 floodlight-test-src
+/bin

@@ -221,7 +221,6 @@ public class GreenMSTTest extends FloodlightTestCase {
 			public ImmutablePort answer() throws Throwable {
 				short portNum = (Short) EasyMock.getCurrentArguments()[0];
 				for (int i = 0; i < ports.size(); ++i) {
-					System.err.println("serarching port " + portNum + ", looking port " + ports.get(i).getPortNumber());
 					if (portNum == ports.get(i).getPortNumber()) {
 						return ports.get(i);
 					}
