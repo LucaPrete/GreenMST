@@ -126,7 +126,7 @@ To test this software a implementation the following steps have been executed:
 
  * At this point the topology can be shown with the following command:
    ```
-   $ ./viewGreenMSTapis.sh -a topoEdges
+   $ ./viewGreenMSTapis.sh -a topoedges
    [
       {
         "cost": 1, 
